@@ -5,10 +5,9 @@ const movieRoutes = require("../../src/routes/movie");
 
 const api = express();
 
-const router = Router();
-router.get("/", (req, res) => res.send("Hello I am listening"));
+app.get("/", (req, res) => res.send("Hello I am listening"));
 
 api.use("/api/", router);
-api.use(movieRoutes);
+api.use("/api/", movieRoutes);
 
 export const handler = serverless(api);
