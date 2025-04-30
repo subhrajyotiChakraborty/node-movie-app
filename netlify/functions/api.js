@@ -7,7 +7,6 @@ const api = express();
 
 api.get("/", (req, res) => res.send("Hello I am listening"));
 
-api.use("/api/", router);
 api.use("/api/", movieRoutes);
 
 export const handler = serverless(api);
