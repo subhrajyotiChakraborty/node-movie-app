@@ -16,6 +16,7 @@ app.get("/movies/:movieName", async (req, res) => {
     }
   );
   const data = await promiseResponse.json();
+
   res.status(200).send(data);
 });
 
