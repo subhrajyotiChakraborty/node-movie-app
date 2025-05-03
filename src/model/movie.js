@@ -1,8 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 
-const rootDir = require("../util/path");
-
 module.exports = class Movie {
   constructor(Poster, Title, Year, Type, imdbID) {
     this.poster = Poster;
@@ -40,7 +38,7 @@ module.exports = class Movie {
         if (movieIndex === -1) {
           allMovies.push(this);
           fs.writeFile(
-            path.join(rootDir, "data", "movies.json"),
+            path.join("src", "data", "movies.json"),
             JSON.stringify({ movies: allMovies }),
             "utf8",
             (error) => {
