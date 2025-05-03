@@ -13,7 +13,7 @@ module.exports = class Movie {
   }
 
   static getAll(cb) {
-    fs.readFile(path.join(rootDir, "data", "movies.json"), (err, data) => {
+    fs.readFile(path.join("src", "data", "movies.json"), (err, data) => {
       if (!err) {
         const content = data.toString();
         cb({
@@ -31,7 +31,7 @@ module.exports = class Movie {
   }
 
   save(cb) {
-    fs.readFile(path.join(rootDir, "data", "movies.json"), (err, data) => {
+    fs.readFile(path.join("src", "data", "movies.json"), (err, data) => {
       if (!err) {
         const content = data.toString();
         const allMovies = JSON.parse(content)?.movies || [];

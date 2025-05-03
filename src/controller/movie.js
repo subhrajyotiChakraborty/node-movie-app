@@ -30,8 +30,8 @@ exports.getFavorites = (req, res, next) => {
     if (data?.code === 200) {
       res.status(200).send({ movies: data?.movies });
     } else {
-      res.status(code).send({
-        message: msg,
+      res.status(data?.code).send({
+        message: data?.msg,
       });
     }
   });
