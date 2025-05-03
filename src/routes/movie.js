@@ -8,5 +8,6 @@ router.get("/movies/:movieName", movieController.getAllMoviesByName);
 router.get("/movie/:movieId", movieController.getMovieDetails);
 router.get("/favorites", movieController.getFavorites);
 router.post("/movie", movieController.postAddFavorite);
+router.delete("/movie/:movieId", movieController.deleteFavorite);
 
 module.exports = router;

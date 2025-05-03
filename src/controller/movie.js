@@ -46,5 +46,14 @@ exports.postAddFavorite = (req, res, next) => {
       success,
     });
   });
-  console.log("-----END-----");
+};
+
+exports.deleteFavorite = (req, res, next) => {
+  const { movieId } = req.params;
+  Movie.delete(movieId, ({ msg, success, code }) => {
+    res.status(code).send({
+      message: msg,
+      success,
+    });
+  });
 };

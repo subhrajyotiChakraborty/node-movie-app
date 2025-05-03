@@ -75,4 +75,54 @@ module.exports = class Movie {
       }
     });
   }
+
+  static delete(movieId, cb) {
+    fs.readFile(path.join("src", "data", "movies.json"), (err, data) => {
+      if (!err) {
+        const content = data.toString();
+        const allMovies = JSON.parse(content)?.movies || [];
+        const movieIndex = allMovies.findIndex((i) => i.imdbId === movieId);
+        if (movieIndex === -1) {
+          cb({
+            msg: `movie ${movieId} id is not exist`,
+            success: false,
+            code: 400,
+          });
+        } else {
+          const updatedMovieList = allMovies.filter(
+            (i) => i.imdbId !== movieId
+          );
+
+          fs.writeFile(
+            path.join("src", "data", "movies.json"),
+            JSON.stringify({ movies: updatedMovieList }),
+            "utf8",
+            (error) => {
+              if (error) {
+                cb({
+                  msg: `Error while delete the data`,
+                  success: false,
+                  code: 500,
+                });
+                console.log("error during write the file", error);
+              } else {
+                cb({
+                  msg: `movie ${movieId} deleted successfully`,
+                  success: true,
+                  code: 200,
+                });
+              }
+            }
+          );
+        }
+      } else {
+        cb({
+          msg: `Error while reading the data`,
+          success: false,
+          code: 500,
+        });
+        console.log("Error while reading the file", err);
+      }
+    });
+  }
 };
