@@ -1,3 +1,5 @@
+const Movie = require("../model/movie");
+
 exports.getAllMoviesByName = async (req, res, next) => {
   const { movieName } = req.params;
   const { page } = req.query;
@@ -21,4 +23,28 @@ exports.getMovieDetails = async (req, res, next) => {
   );
   const data = await promiseResponse.json();
   res.status(200).send(data);
+};
+
+exports.getFavorites = (req, res, next) => {
+  Movie.getAll((data) => {
+    if (data?.code === 200) {
+      res.status(200).send({ movies: data?.movies });
+    } else {
+      res.status(code).send({
+        message: msg,
+      });
+    }
+  });
+};
+
+exports.postAddFavorite = (req, res, next) => {
+  const { Title, Poster, imdbID, Type, Year } = req.body;
+  const movie = new Movie(Poster, Title, Year, Type, imdbID);
+  movie.save(({ msg, success, code }) => {
+    res.status(code).send({
+      message: msg,
+      success,
+    });
+  });
+  console.log("-----END-----");
 };
