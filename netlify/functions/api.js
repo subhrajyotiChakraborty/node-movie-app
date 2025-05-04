@@ -14,8 +14,18 @@ api.use(bodyParser.json());
 api.use(bodyParser.urlencoded({ extended: true }));
 api.use("/api/", movieRoutes);
 
-export const handler = () => {
-  mongoConnect(() => {
-    return serverless(api);
-  });
+let handler;
+mongoConnect(() => {
+  // wrap Express app
+  handler = serverless(api);
+});
+
+exports.handler = async (event, context) => {
+  if (!handler) {
+    return {
+      statusCode: 503,
+      body: "Server not ready. Try again shortly.",
+    };
+  }
+  return handler(event, context);
 };
