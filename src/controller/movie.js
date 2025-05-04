@@ -48,6 +48,17 @@ exports.postAddFavorite = (req, res, next) => {
   });
 };
 
+exports.putUpdateRating = (req, res, next) => {
+  const { Title, Poster, imdbID, Type, Year, userRating, _id } = req.body;
+  const movie = new Movie(Poster, Title, Year, Type, imdbID, userRating, _id);
+  movie.update(({ msg, success, code }) => {
+    res.status(code).send({
+      message: msg,
+      success,
+    });
+  });
+};
+
 exports.deleteFavorite = (req, res, next) => {
   const { movieId } = req.params;
   Movie.delete(movieId, ({ msg, success, code }) => {

@@ -4,6 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const movieRoutes = require("./routes/movie");
+const { mongoConnect } = require("./util/database");
 
 const app = express();
 
@@ -13,4 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(movieRoutes);
 
-app.listen(3000);
+mongoConnect(() => {
+  console.log("DB connection successful");
+  app.listen(3000);
+});

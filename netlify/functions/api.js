@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const movieRoutes = require("../../src/routes/movie");
+const { mongoConnect } = require("../../src/util/database");
 
 const api = express();
 
@@ -13,4 +14,8 @@ api.use(bodyParser.json());
 api.use(bodyParser.urlencoded({ extended: true }));
 api.use("/api/", movieRoutes);
 
-export const handler = serverless(api);
+export const handler = () => {
+  mongoConnect(() => {
+    return serverless(api);
+  });
+};

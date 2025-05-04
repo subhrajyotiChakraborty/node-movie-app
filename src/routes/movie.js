@@ -9,5 +9,6 @@ router.get("/movie/:movieId", movieController.getMovieDetails);
 router.get("/favorites", movieController.getFavorites);
 router.post("/movie", movieController.postAddFavorite);
 router.delete("/movie/:movieId", movieController.deleteFavorite);
+router.put("/movie/:movieId", movieController.putUpdateRating);
 
 module.exports = router;
