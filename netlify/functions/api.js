@@ -8,24 +8,30 @@ const { mongoConnect } = require("../../src/util/database");
 
 const api = express();
 
-api.get("/", (req, res) => res.send("Hello I am listening"));
 api.use(cors());
 api.use(bodyParser.json());
 api.use(bodyParser.urlencoded({ extended: true }));
-api.use("/api/", movieRoutes);
 
-let handler;
-mongoConnect(() => {
-  // wrap Express app
-  handler = serverless(api);
+// This middleware will run on every request and ensure DB is available
+api.use(async (req, res, next) => {
+  try {
+    mongoConnect(() => {
+      next();
+    }); // Attach cached DB connection to request
+  } catch (err) {
+    console.error("Failed to connect to MongoDB:", err);
+    res.status(500).json({ error: "Failed to connect to database" });
+  }
 });
 
+// Define routes
+api.get("/", (req, res) => res.send("Hello I am listening"));
+api.use("/api", movieRoutes);
+
+// Wrap Express app with serverless-http
+const handler = serverless(api);
+
+// Proper export
 exports.handler = async (event, context) => {
-  if (!handler) {
-    return {
-      statusCode: 503,
-      body: "Server not ready. Try again shortly.",
-    };
-  }
-  return handler(event, context);
+  return await handler(event, context);
 };
